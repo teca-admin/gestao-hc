@@ -326,32 +326,7 @@ export const FloorPlan: React.FC<{
                    initial={{ opacity: 0 }}
                    animate={{ opacity: 1 }}
                    exit={{ opacity: 0 }}
-                   drag
-                   dragMomentum={false}
-                   onDragEnd={(e, info) => {
-                     // SVG to Screen scale approximation
-                     const svgHeight = config.imageDimensions.height;
-                     const screenHeight = window.innerHeight;
-                     const scale = svgHeight / screenHeight; // rough approximation
-                     
-                     setConfig(prev => {
-                       return {
-                         ...prev,
-                         setores: prev.setores.map(s => s.id === activeSector.id ? {
-                           ...s,
-                           subSetores: s.subSetores.map(ss => ss.id === sub.id ? {
-                             ...ss,
-                             posicao: { 
-                               x: ss.posicao!.x + (info.offset.x * scale),
-                               y: ss.posicao!.y + (info.offset.y * scale)
-                             }
-                           } : ss)
-                         } : s)
-                       };
-                     });
-                   }}
-                   style={{ x: 0, y: 0 }} // Reset internal transform so it re-renders at new x,y from props
-                   className="overflow-visible pointer-events-auto cursor-grab active:cursor-grabbing"
+                   className="overflow-visible pointer-events-auto"
                  >
                    <div className="w-full h-full flex items-center justify-center flex-col">
                      <div className="flex flex-col border-l-4 rounded-sm overflow-hidden shadow-xl" style={{ borderLeftColor: activeSector.cor }}>

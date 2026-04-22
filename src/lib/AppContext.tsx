@@ -58,9 +58,34 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
       try {
         const { data, error } = await supabase.from('hc_config').select('id, config_data');
         if (data && data.length > 0) {
+          // MIGRAÇÃO: Renomear "Croqui 1" para "Terminal de Cargas"
+          const needsMigration = data.some(row => 
+            row.config_data?.projectName === 'Croqui 1'
+          );
+          
+          if (needsMigration) {
+            console.log('🔄 Migrando nome "Croqui 1" para "Terminal de Cargas"...');
+            const croqui1 = data.find(row => row.config_data?.projectName === 'Croqui 1');
+            if (croqui1) {
+              await supabase.from('hc_config').upsert({
+                id: croqui1.id,
+                config_data: {
+                  ...croqui1.config_data,
+                  projectName: 'Terminal de Cargas'
+                }
+              }, { onConflict: 'id' });
+              
+              // Atualizar data local para não precisar reload
+              const updatedIndex = data.findIndex(row => row.id === croqui1.id);
+              if (updatedIndex !== -1) {
+                data[updatedIndex].config_data.projectName = 'Terminal de Cargas';
+              }
+            }
+          }
+          
           const loadedProjects = data.map(row => ({
             id: row.id,
-            projectName: row.config_data?.projectName || `Croqui ${row.id}`
+            projectName: row.config_data?.projectName || `Layout ${row.id}`
           }));
           setProjects(loadedProjects);
 
