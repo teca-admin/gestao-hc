@@ -24,9 +24,9 @@ const INITIAL_CONFIG: AppConfig = {
   imageDimensions: { width: 1600, height: 900 },
   setores: [],
   turnos: [
-    { turnoId: 1, folguistas: 0, hc: [] },
-    { turnoId: 2, folguistas: 0, hc: [] },
-    { turnoId: 3, folguistas: 0, hc: [] }
+    { turnoId: 1, hc: [] },
+    { turnoId: 2, hc: [] },
+    { turnoId: 3, hc: [] }
   ]
 };
 
@@ -220,7 +220,7 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({ children })
         imagemCroqui: imageUrl || "https://images.unsplash.com/photo-1628135899997-75e985888806?auto=format&fit=crop&q=80&w=1600",
         imageDimensions: { width: 1600, height: 900 },
         setores: [], // Começa vazio conforme solicitado
-        turnos: TURNOS.map(t => ({ turnoId: t.id, folguistas: 0, hc: [] }))
+        turnos: TURNOS.map(t => ({ turnoId: t.id, hc: [] }))
       };
       
       await supabase.from('hc_config').upsert({ id: nextId, config_data: newConfig }, { onConflict: 'id' });

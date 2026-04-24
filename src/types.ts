@@ -37,7 +37,6 @@ export interface HCData {
 
 export interface TurnoData {
   turnoId: 1 | 2 | 3;
-  folguistas: number;
   hc: HCData[];
 }
 

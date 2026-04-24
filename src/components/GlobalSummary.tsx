@@ -35,10 +35,9 @@ export function GlobalSummary() {
               {[1, 2, 3].map(tId => {
                 const tData = config?.turnos?.find(t => t.turnoId === tId);
                 const hcArray = tData?.hc || [];
-                const folguistas = tData?.folguistas || 0;
                 const totalOpe = hcArray.reduce((acc, curr) => acc + curr.operador, 0);
                 const totalAux = hcArray.reduce((acc, curr) => acc + curr.auxiliar, 0);
-                const totalTurno = totalOpe + totalAux + folguistas;
+                const totalTurno = totalOpe + totalAux;
 
                 return (
                   <div key={tId} className="flex justify-between items-center bg-blue-50/50 p-2 rounded-xl border border-blue-100/50">
@@ -53,10 +52,6 @@ export function GlobalSummary() {
                        <div className="flex flex-col items-center w-8">
                           <span className="text-[9px] font-bold text-emerald-600 tracking-wider">OPE</span>
                           <span className="text-sm font-black text-emerald-900">{totalOpe.toString().padStart(2, '0')}</span>
-                       </div>
-                       <div className="flex flex-col items-center w-10">
-                          <span className="text-[9px] font-bold text-blue-500 tracking-wider">FOLGA</span>
-                          <span className="text-sm font-black text-blue-900">{folguistas.toString().padStart(2, '0')}</span>
                        </div>
                        
                        <div className="h-7 w-px bg-blue-200/60 mx-1"></div>
@@ -74,16 +69,14 @@ export function GlobalSummary() {
             {(() => {
               let totalAuxAll = 0;
               let totalOpeAll = 0;
-              let totalFolgaAll = 0;
               
               (config?.turnos || []).forEach(t => {
                 const hcArray = t.hc || [];
                 totalOpeAll += hcArray.reduce((sum, curr) => sum + curr.operador, 0);
                 totalAuxAll += hcArray.reduce((sum, curr) => sum + curr.auxiliar, 0);
-                totalFolgaAll += (t.folguistas || 0);
               });
               
-              const totalContrato = totalAuxAll + totalOpeAll + totalFolgaAll;
+              const totalContrato = totalAuxAll + totalOpeAll;
 
               return (
                 <div className="bg-slate-800 border-t border-slate-700 p-3 flex flex-col gap-2.5">
@@ -100,11 +93,6 @@ export function GlobalSummary() {
                      <div className="flex flex-col items-center flex-1">
                         <span className="text-[9px] font-bold text-slate-400 tracking-wider">OPE</span>
                         <span className="text-sm font-black text-emerald-500">{totalOpeAll.toString().padStart(2, '0')}</span>
-                     </div>
-                     <div className="h-6 w-px bg-slate-700/50 mx-1"></div>
-                     <div className="flex flex-col items-center flex-1">
-                        <span className="text-[9px] font-bold text-slate-400 tracking-wider">FOLGA</span>
-                        <span className="text-sm font-black text-blue-400">{totalFolgaAll.toString().padStart(2, '0')}</span>
                      </div>
                   </div>
                 </div>

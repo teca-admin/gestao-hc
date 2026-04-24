@@ -78,17 +78,6 @@ export const EditSectorsTab: React.FC<{
     });
   };
 
-  const updateFolguistas = (value: number) => {
-    setLocalConfig((prev: any) => {
-      const turnoIndex = prev.turnos.findIndex((t: any) => t.turnoId === selectedTurnoId);
-      if (turnoIndex === -1) return prev;
-      
-      const newTurnos = [...prev.turnos];
-      newTurnos[turnoIndex] = { ...newTurnos[turnoIndex], folguistas: value };
-      return { ...prev, turnos: newTurnos };
-    });
-  };
-
   const addSubSector = (sectorId: string) => {
     const id = `sub-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
@@ -125,21 +114,6 @@ export const EditSectorsTab: React.FC<{
                 <option key={t.id} value={t.id}>{t.nome}</option>
               ))}
             </select>
-          </div>
-
-          <div className="bg-blue-600 p-4 rounded-xl shadow-lg shadow-blue-200">
-            <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-blue-100">Folguistas</label>
-              <Users size={16} className="text-blue-200" />
-            </div>
-            <input
-              type="number"
-              min="0"
-              value={activeTurnoData?.folguistas || 0}
-              onChange={e => updateFolguistas(parseInt(e.target.value) || 0)}
-              className="w-full px-3 py-2 bg-blue-500/30 border border-blue-400/30 rounded-lg text-white font-black text-xl focus:bg-blue-500/50 outline-none"
-            />
-            <p className="text-[10px] text-blue-200 mt-2 font-medium opacity-80">Efetivo de reserva para este turno específico.</p>
           </div>
 
           <button
